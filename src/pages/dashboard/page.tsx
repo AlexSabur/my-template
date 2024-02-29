@@ -1,5 +1,12 @@
+import { Button } from "shared/ui";
+
 const DashboardPage = () => {
-  return <p>DashboardPage</p>;
+  return (
+    <div>
+      <p>DashboardPage</p>
+      <Button color="primary" type="button">asdasd</Button>
+    </div>
+  );
 };
 
 export default DashboardPage;
