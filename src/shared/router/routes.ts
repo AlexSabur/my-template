@@ -5,7 +5,7 @@ import {
 } from "atomic-router";
 import { sample } from "effector";
 import { createHashHistory } from "history";
-import { appStarted } from "shared/init";
+import { appStarted } from "shared/config";
 
 export const routes = {
   auth: {

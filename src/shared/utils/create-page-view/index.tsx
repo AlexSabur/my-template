@@ -1,6 +1,6 @@
-import { Suspense, lazy } from "react";
+import { FC, Suspense, lazy } from "react";
 
-export default function createPageView(importFn: () => Promise<{ default: any }>) {
+export default function createPageView(importFn: () => Promise<{ default: FC }>) {
   const Page = lazy(importFn);
 
   return () => {

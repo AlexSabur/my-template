@@ -1,7 +1,7 @@
 import { RouterProvider } from "atomic-router-react";
 import { FC } from "react";
 import { Pages } from "pages";
-import { $$router } from "shared/routing";
+import { $$router } from "shared/router";
 
 const App: FC = () => {
   return (
