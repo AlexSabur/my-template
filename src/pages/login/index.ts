@@ -1,6 +1,6 @@
 import { RouteRecord, createRouteView } from "atomic-router-react";
-import { currentRoute } from "./model.ts";
 import { createPageView } from "shared/utils";
+import { currentRoute } from "./model.ts";
 
 export default {
   view: createRouteView({

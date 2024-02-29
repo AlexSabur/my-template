@@ -1,9 +1,9 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
 import { allSettled, fork } from "effector";
 import { Provider } from "effector-react";
-import { appStarted } from "shared/init";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 import App from "app";
+import { appStarted } from "shared/init";
 
 const main = async () => {
   const scope = fork();
