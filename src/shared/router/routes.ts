@@ -3,7 +3,7 @@ import {
   createRoute,
   createRouterControls,
 } from "atomic-router";
-import { sample } from "effector";
+import { createStore, sample } from "effector";
 import { createHashHistory } from "history";
 import { appStarted } from "shared/config";
 
@@ -40,6 +40,9 @@ export const $$router = createHistoryRouter({
   ],
   controls: $$controls,
 });
+
+export const $status = createStore(200).on($$router.routeNotFound, () => 404);
+export const $redirect = createStore<string | null>(null);
 
 sample({
   clock: appStarted,

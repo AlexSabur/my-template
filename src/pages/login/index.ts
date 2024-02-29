@@ -1,10 +1,10 @@
 import { createRouteView } from "atomic-router-react";
 import { createPageView } from "shared/utils";
-import { currentRoute } from "./model.ts";
+import { anonymousRoute, currentRoute } from "./model.ts";
 
 export default {
   view: createRouteView({
-    route: currentRoute,
+    route: anonymousRoute,
     view: createPageView(() => import("./page.tsx")),
   }),
   route: currentRoute,

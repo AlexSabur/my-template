@@ -5,9 +5,12 @@ import {
   chainRoute,
 } from "atomic-router";
 import { Effect, EventCallable, createEvent, sample } from "effector";
+import { $hasJwtToken } from "shared/session";
 
 interface ChainParams<Params extends RouteParams> {
-  otherwise?: EventCallable<void> | Effect<void, any, any>;
+  otherwise?:
+    | EventCallable<RouteParamsAndQuery<Params>>
+    | Effect<RouteParamsAndQuery<Params>, any, any>;
 }
 
 export default function chainAuthorized<Params extends RouteParams>(
@@ -19,25 +22,18 @@ export default function chainAuthorized<Params extends RouteParams>(
 
   const alreadyAuthenticated = sample({
     clock: sessionCheckStarted,
-    source: $authenticationStatus,
-    filter: (status) => status === AuthStatus.Authenticated,
+    source: $hasJwtToken,
+    filter: (hasJwtToken) => hasJwtToken,
   });
 
   const alreadyAnonymous = sample({
     clock: sessionCheckStarted,
-    source: $authenticationStatus,
-    filter: (status) => status === AuthStatus.Anonymous,
+    source: $hasJwtToken,
+    filter: (hasJwtToken) => hasJwtToken === false,
   });
 
   sample({
-    clock: sessionCheckStarted,
-    source: $authenticationStatus,
-    filter: (status) => status === AuthStatus.Initial,
-    target: sessionRequestFx,
-  });
-
-  sample({
-    clock: [alreadyAnonymous, sessionRequestFx.fail],
+    clock: alreadyAnonymous,
     source: { params: route.$params, query: route.$query },
     filter: route.$isOpened,
     target: sessionReceivedAnonymous,
@@ -46,14 +42,14 @@ export default function chainAuthorized<Params extends RouteParams>(
   if (otherwise) {
     sample({
       clock: sessionReceivedAnonymous,
-      target: otherwise as EventCallable<void>,
+      target: otherwise as EventCallable<RouteParamsAndQuery<Params>>,
     });
   }
 
   return chainRoute({
     route,
     beforeOpen: sessionCheckStarted,
-    openOn: [alreadyAuthenticated, sessionRequestFx.done],
+    openOn: alreadyAuthenticated,
     cancelOn: sessionReceivedAnonymous,
   });
 }
